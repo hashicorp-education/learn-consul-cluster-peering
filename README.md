@@ -41,14 +41,13 @@ Here is a sample workflow on using this repository. For more details, please vis
   * Deploy HashiCups on first cluster
 
     ```shell-session
-    kubectl --context=dc1 apply -f hashicups-v1.0.2
-    for service in {frontend,nginx,public-api,payments,intentions}; do kubectl --context=dc1 apply -f hashicups-v1.0.2/$service.yaml; done
+    for service in {frontend,nginx,public-api,payments,intentions-dc1}; do kubectl --context=dc1 apply -f hashicups-v1.0.2/$service.yaml; done
     ```
 
   * Deploy rest of app on second cluster
 
-      ```shell-session
-    for service in {products-api,postgres}; do kubectl --context=dc2 apply -f hashicups-v1.0.2/$service.yaml; done
+    ```shell-session
+    for service in {products-api,postgres,intentions-dc2}; do kubectl --context=dc2 apply -f hashicups-v1.0.2/$service.yaml; done
     ```
 
 4. Verify deployment
@@ -77,10 +76,11 @@ Here is a sample workflow on using this repository. For more details, please vis
     kubectl --context=dc1 get peeringacceptors
     kubectl --context=dc1 get secrets
     kubectl --context=dc1 get secret peering-token-dc2 -o yaml | kubectl --context=dc2 apply -f -
+    ```
 
   * Establish a connection between clusters and verify it
 
-      ```shell-session
+    ```shell-session
     kubectl --context=dc2 apply -f k8s-yamls/dialer-dc2.yaml
     curl http://127.0.0.1:8501/v1/peering/dc2
     ```
