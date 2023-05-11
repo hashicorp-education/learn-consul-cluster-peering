@@ -1,6 +1,6 @@
 global:
-  image: "hashicorp/consul:1.14.1"
-  imageK8S: "hashicorp/consul-k8s-control-plane:1.0.1"
+  image: "hashicorp/consul:1.14.6"
+  imageK8S: "hashicorp/consul-k8s-control-plane:1.0.5"
   peering:
     enabled: true
   tls:
