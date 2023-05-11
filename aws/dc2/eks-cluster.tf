@@ -3,13 +3,22 @@ module "eks" {
   version = "18.26.6"
 
   cluster_name    = local.cluster_name
-  cluster_version = "1.22"
+  cluster_version = "1.26"
+
+  cluster_addons = {
+    aws-ebs-csi-driver = { most_recent = true }
+  }
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
+
+    # Needed by the aws-ebs-csi-driver
+    iam_role_additional_policies = [
+      "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+    ]
 
     # Disabling and using externally provided security groups
     create_security_group = false
@@ -19,7 +28,7 @@ module "eks" {
   node_security_group_tags = {
     "kubernetes.io/cluster/${local.cluster_name}" = null
   }
-  
+
   eks_managed_node_groups = {
     one = {
       name = "node-group-1"

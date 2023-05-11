@@ -1,6 +1,6 @@
 global:
-  image: "hashicorp/consul:1.14.6"
-  imageK8S: "hashicorp/consul-k8s-control-plane:1.0.5"
+  image: "hashicorp/consul:1.15.2"
+  imageK8S: "hashicorp/consul-k8s-control-plane:1.1.1"
   peering:
     enabled: true
   tls:
@@ -15,12 +15,12 @@ dns:
   enableRedirection: true
 
 server:
- replicas: 1
- bootstrapExpect: 1
- extraConfig: |
-   {
-     "log_level": "TRACE"
-   }
+  enabled: true
+  replicas: 1
+  extraConfig: |
+    {
+      "log_level": "TRACE"
+    }
 
 connectInject:
   enabled: true
@@ -28,9 +28,6 @@ connectInject:
 meshGateway:
   enabled: true # mandatory for k8s cluster peering
   replicas: 1
-
-controller:
-  enabled: true
 
 ui:
   enabled: true
