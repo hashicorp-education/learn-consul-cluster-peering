@@ -3,14 +3,20 @@ variable "project" {
   description = "Google Cloud project"
 }
 
-variable "dc1_zone" {
+variable "zone" {
   type = string
   description = "Google Cloud zone for first cluster"
-  default = "us-central1-a"
+  default = "us-west1-a"
 }
 
-variable "dc2_zone" {
-  type = string
-  description = "Google Cloud zone for second cluster"
-  default = "us-west1-b"
+variable "consul_chart_version" {
+  type        = string
+  description = "The Consul Helm chart version to use"
+  default     = "1.3.0"
+}
+
+variable "consul_version" {
+  type        = string
+  description = "The Consul version to use"
+  default     = "1.17.0"
 }
