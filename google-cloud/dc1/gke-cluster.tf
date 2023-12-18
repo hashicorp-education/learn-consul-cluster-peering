@@ -8,8 +8,8 @@ resource "google_project_service" "svc" {
   ])
 }
 
-resource "google_container_cluster" "gke-cluster-consulpeering" {
-  name = "gke-cluster-consulpeering"
+resource "google_container_cluster" "dc1" {
+  name = "dc1"
   location = var.zone
   initial_node_count = 3
   deletion_protection = false
@@ -21,20 +21,20 @@ resource "google_container_cluster" "gke-cluster-consulpeering" {
 
 data "google_client_config" "provider" {}
 
-data "google_container_cluster" "gke-cluster-consulpeering" {
-  name     = "gke-cluster-consulpeering"
+data "google_container_cluster" "dc1" {
+  name     = "dc1"
   location = var.zone
 
-  depends_on = [ google_container_cluster.gke-cluster-consulpeering ]
+  depends_on = [ google_container_cluster.dc1 ]
 }
 
 module "gke_auth" {
   source               = "terraform-google-modules/kubernetes-engine/google//modules/auth"
 
   project_id           = var.project
-  cluster_name         = "gke-cluster-consulpeering"
+  cluster_name         = "dc1"
   location             = var.zone
   use_private_endpoint = true
 
-  depends_on = [ google_container_cluster.gke-cluster-consulpeering ]
+  depends_on = [ google_container_cluster.dc1 ]
 }
