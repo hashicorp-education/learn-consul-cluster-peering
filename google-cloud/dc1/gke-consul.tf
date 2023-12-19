@@ -13,6 +13,7 @@ resource "helm_release" "consul" {
   chart      = "consul"
   namespace  = "consul"
   wait       = true
+  timeout    = 900 # 15mins timeout to avoid having to re-run `terraform destroy`
 
   values = [
     templatefile("${path.module}/../../k8s-yamls/consul-helm-dc1.yaml",{
