@@ -29,17 +29,6 @@ resource "helm_release" "consul" {
                 ]
 }
 
-## Create API Gateway
-data "kubectl_filename_list" "api_gw_manifests" {
-  pattern = "${path.module}/api-gw/*.yaml"
-}
-
-resource "kubectl_manifest" "api_gw" {
-  count     = length(data.kubectl_filename_list.api_gw_manifests.matches)
-  yaml_body = file(element(data.kubectl_filename_list.api_gw_manifests.matches, count.index))
-  depends_on = [helm_release.consul]
-}
-
 locals {
   # non-default context name to protect from using wrong kubeconfig
   kubeconfig_context = "_terraform-kubectl-context-${local.cluster_name}_"

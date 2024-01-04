@@ -34,6 +34,10 @@ connectInject:
   metrics:
     defaultEnabled: true # by default, this inherits from the value global.metrics.enabled
     defaultEnableMerging: false
+  apiGateway:
+    manageExternalCRDs: true
+    managedGatewayClass:
+      serviceType: LoadBalancer
 
 meshGateway:
   enabled: true # mandatory for k8s cluster peering

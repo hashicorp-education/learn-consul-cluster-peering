@@ -30,13 +30,13 @@ resource "helm_release" "consul" {
 }
 
 ## Create API Gateway
-data "kubectl_filename_list" "api_gw_manifests" {
-  pattern = "${path.module}/api-gw/*.yaml"
+data "kubectl_path_documents" "api_gw_manifests" {
+  pattern = "${path.module}/../../k8s-yamls/api-gateway*.yaml"
 }
 
 resource "kubectl_manifest" "api_gw" {
-  count     = length(data.kubectl_filename_list.api_gw_manifests.matches)
-  yaml_body = file(element(data.kubectl_filename_list.api_gw_manifests.matches, count.index))
+  for_each   = toset(data.kubectl_path_documents.api_gw_manifests.documents)
+  yaml_body  = each.value
   depends_on = [helm_release.consul]
 }
 
