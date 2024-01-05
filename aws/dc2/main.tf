@@ -1,5 +1,5 @@
 locals {
-  cluster_name = "lean-clusterpeer-${random_string.suffix.result}"
+  cluster_name = "learn-clusterpeer-${random_string.suffix.result}"
 }
 
 resource "random_string" "suffix" {
